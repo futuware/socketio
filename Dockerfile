@@ -7,7 +7,7 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 RUN npm install -g node-gyp
-RUN npm install socket.io redis
+RUN npm install socket.io redis express
 
 VOLUME /application
 
