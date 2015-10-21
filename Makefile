@@ -1,4 +1,5 @@
 PORT = 49100
+REDIS_URLS = redis://172.17.42.1:6379
 
 build:
 	docker build -t socketio -f Dockerfile .
