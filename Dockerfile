@@ -2,13 +2,14 @@ FROM ubuntu:trusty
 
 RUN apt-get update \
     && apt-get upgrade -y \
-    && apt-get install --yes npm \
+    && apt-get install --yes npm supervisor \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 RUN npm install -g node-gyp
 RUN npm install socket.io redis express
 
-VOLUME /application
+RUN mkdir /application
+COPY . /application
 
-CMD nodejs /application/index.js
+CMD supervisord -c /application/supervisord.conf
