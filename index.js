@@ -9,6 +9,7 @@ var config = {
 };
 
 var io = require('socket.io')(config.port);
+var ioSocketId = 0;
 var ioSockets = {};
 var redis = require('redis');
 var redisReceivers = [];
@@ -65,6 +66,10 @@ function onRedisMessage (url, channel, message) {
 
             sockets.forEach(function (socket) {
                 if (json.type === 'authorize') {
+                    if (socket.id !== json.socketId) {
+                        return;
+                    }
+
                     socket.authorized = true;
                     log('User ' + json.uid + ' was authorized');
                 } else if (socket.authorized) {
@@ -104,8 +109,10 @@ function onSocketMessage (socket, message) {
 
     if (message.uid) {
         socket.uid = message.uid;
+        socket.id = ++ioSocketId;
         ioSockets[message.uid] = ioSockets[message.uid] || [];
         ioSockets[message.uid].push(socket);
+        message.socketId = socket.id;
         publishRedisMessage('socket.io:auth', message);
     } else {
         log('User has joined to the room ' + message.room);
