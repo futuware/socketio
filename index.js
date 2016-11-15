@@ -113,6 +113,7 @@ function onSocketMessage (socket, message) {
         ioSockets[message.uid] = ioSockets[message.uid] || [];
         ioSockets[message.uid].push(socket);
         message.socketId = socket.id;
+        message.ip = socket.handshake.headers['x-forwarded-for'] || socket.conn.remoteAddress;
         publishRedisMessage('socket.io:auth', message);
     } else {
         log('User has joined to the room ' + message.room);
