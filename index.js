@@ -1,10 +1,18 @@
 'use strict';
 
+function getRedisUrls(){
+    var redisUrlsString = process.env.REDIS_URLS;
+    if (!redisUrlsString) {
+        throw 'You should set REDIS_URLS env variable, e.g.: REDIS_URLS=redis://172.17.42.1:6379,redis://hostname2:6379';
+    }
+    return redisUrlsString.split(',')
+}
+
 var config = {
     port: 9900,
     debug: Boolean(process.env.DEBUG),
     redis: {
-        urls: process.env.REDIS_URLS.split(',')
+        urls: getRedisUrls()
     }
 };
 

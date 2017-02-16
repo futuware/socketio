@@ -1,0 +1,8 @@
+version: '2.1'
+services:
+  socketio:
+    build: .
+    volumes:
+      - '.:/application'
+    environment:
+      REDIS_URLS: "${SOCKETIO_REDIS_URLS:-redis://172.17.0.1:6379}"

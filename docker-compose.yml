@@ -1,0 +1,8 @@
+version: '2.1'
+services:
+  socketio:
+    image: 'futuware/socketio'
+    environment:
+      REDIS_URLS: "${SOCKETIO_REDIS_URLS}"
+    ports:
+      - "${SOCKETIO_PORT:-49100}:9900"
